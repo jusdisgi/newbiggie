@@ -1,0 +1,275 @@
+units:
+  # Proxy Spacing Variables
+  # U = 19.05
+  # u = 19.00
+  # cx = 18
+  # cy = 17
+  kx: U
+  ky: U
+  # Padding Variables
+  px: kx + 2
+  py: ky + 2
+  # Choc Plate cutouts
+  v1cut: 13.8
+  v2cut: 13.95
+  # Web_preview spacing; no effect on actual config
+  $default_height: 19.05
+  $default_width: 19.05
+
+points:
+  zones:
+    hand:
+      anchor.shift: [60,-160]
+      key:
+        padding: 1ky
+        spread: 1kx
+      columns:
+        stretch:
+          key:
+            column_net: D5
+            mirror.column_net: D5
+        pinky:
+          key:
+            column_net: D3
+            mirror.column_net: D7
+            stagger: 3
+            splay: -1
+            spread: kx+0.6
+        ring:
+          key:
+            stagger: 5
+            splay: -2
+            spread: kx+0.8
+            column_net: D1
+            mirror.column_net: D9
+        middle:
+          key:
+            stagger: 6
+            splay: -2
+            spread: kx+1
+            column_net: D7
+            mirror.column_net: D3
+        index:
+          key:
+            stagger: -4
+            splay: -1
+            spread: kx+0.8
+            column_net: D8
+            mirror.column_net: D2
+        inner:
+          key:
+            stagger: -3
+            splay: -1
+            spread: kx+0.6
+            column_net: D10
+            mirror.column_net: D0
+      rows:
+        bottom:
+          row_net: D6
+          mirror.row_net: D4
+        home:
+          row_net: D4
+          mirror.row_net: D6
+        high:
+          row_net: D2
+          mirror.row_net: D8
+        num:
+          row_net: D0
+          mirror.row_net: D10
+    thumb:
+      key:
+        padding: 1ky
+        spread: 1kx
+      anchor:
+        ref: hand_inner_bottom
+        shift: [-10,-20]
+      columns:
+        near:
+          key:
+            splay: -15
+            column_net: D7
+            mirror.column_net: D3
+        mid:
+          key:
+            splay: -15
+            shift: [3,-2]
+            column_net: D8
+            mirror.column_net: D2
+        far:
+          key:
+            splay: -15
+            shift: [6.4,-3.2]
+            column_net: D10
+            mirror.column_net: D0
+      rows:
+        fan:
+          row_net: D9
+          mirror.row_net: D1
+  rotate: 7
+  mirror: &mirror
+    ref: thumb_far_fan
+    distance: 3kx
+outlines:
+  courtyard:
+    - what: rectangle
+      where: true
+      size: [px, py]
+  plate_cuts:
+    - what: rectangle
+      where: true
+      size: [v2cut,v2cut]
+  board_left:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: thumb_far_fan
+          shift: [0.6px,-0.6py]
+        - ref: hand_middle_bottom
+          shift: [0,-1.25py]
+        - ref: hand_stretch_bottom
+          shift: [-0.6px,-0.6py]
+        - ref: hand_stretch_num
+          shift: [-0.6px,0.6py]
+        - ref: hand_middle_num
+          shift: [0,0.75py]
+        - ref: hand_inner_num
+          shift: [44,0.25py]
+        - ref: hand_inner_bottom
+          shift: [44,-42]
+      fillet: 8
+  board_right:
+    - what: polygon
+      operation: stack
+      points:
+        - ref: mirror_thumb_far_fan
+          shift: [0.6px,-0.6py]
+        - ref: mirror_hand_middle_bottom
+          shift: [0,-1.25py]
+        - ref: mirror_hand_stretch_bottom
+          shift: [-0.6px,-0.6py]
+        - ref: mirror_hand_stretch_num
+          shift: [-0.6px,0.6py]
+        - ref: mirror_hand_middle_num
+          shift: [0,0.75py]
+        - ref: mirror_hand_inner_num
+          shift: [44,0.25py]
+        - ref: mirror_hand_inner_bottom
+          shift: [44,-42]
+      fillet: 8
+pcbs:
+  biggie-splays_choc_v2_left_unrouted:
+    template: kicad8
+    outlines:
+      main:
+        outline: board_left
+    footprints:
+      choc_v2:
+        what: switch_choc_v1_v2
+        where: /^hand|^thumb/
+        params:
+          reversible: false
+          hotswap: true
+          choc_v2_support: true
+          include_choc_v2_led_cutout_marks: true
+          keycap_height: ky
+          keycap_width: kx
+          include_keycap: true
+          from: "{{col_net}}"
+          to: "{{colrow}}"
+      diode:
+        what: diode_tht_sod123
+        where: /^hand|^thumb/
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+          side: F
+        adjust:
+          shift: [0, -5]
+      mcu:
+          what: mcu_nice_nano
+          where:
+            ref: hand_inner_num
+            shift: [26,-10]
+            rotate: -10.5
+      reset:
+        what: reset_switch_smd_side
+        params:
+          from: GND
+          to: RST
+        where:
+          ref: hand_inner_num
+          shift: [42,-20]
+          rotate: -90
+      power:
+        what: power_switch_smd_side
+        params:
+          from: BAT_P
+          to: RAW
+        where:
+          ref: hand_inner_num
+          shift: [42,-6]
+          rotate: 0
+      batcon:
+        what: battery_connector_jst_ph_2
+        where:
+          ref: hand_inner_num
+          shift: [40,-30]
+          rotate: 0
+  biggie-splays_choc_v2_right_unrouted:
+    template: kicad8
+    outlines:
+      main:
+        outline: board_right
+    footprints:
+      choc_v2:
+        what: switch_choc_v1_v2
+        where: /^mirror/
+        params:
+          reversible: false
+          hotswap: true
+          choc_v2_support: true
+          include_choc_v2_led_cutout_marks: true
+          keycap_height: ky
+          keycap_width: kx
+          include_keycap: true
+          from: "{{column_net}}"
+          to: "{{colrow}}"
+      diode:
+        what: diode_tht_sod123
+        where: /^mirror/
+        params:
+          from: "{{colrow}}"
+          to: "{{row_net}}"
+          side: F
+        adjust:
+          shift: [0, -5]
+      mcu:
+          what: mcu_nice_nano
+          where:
+            ref: mirror_hand_inner_num
+            shift: [26,-2.5]
+            rotate: -10.5
+      reset:
+        what: reset_switch_smd_side
+        params:
+          from: RST
+          to: GND
+        where:
+          ref: mirror_hand_inner_high
+          shift: [16,-3]
+          rotate: -90
+      power:
+        what: power_switch_smd_side
+        params:
+          from: BAT_P
+          to: RAW
+        where:
+          ref: mirror_hand_inner_num
+          shift: [42,-6]
+          rotate: -90
+      batcon:
+        what: battery_connector_jst_ph_2
+        where:
+          ref: mirror_hand_inner_high
+          shift: [23,0]
+          rotate: 0
