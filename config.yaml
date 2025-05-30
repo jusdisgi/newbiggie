@@ -26,12 +26,12 @@ points:
       columns:
         stretch:
           key:
-            column_net: D5
-            mirror.column_net: D5
+            column_net: P2
+            mirror.column_net: P2
         pinky:
           key:
-            column_net: D3
-            mirror.column_net: D7
+            column_net: P3
+            mirror.column_net: P3
             stagger: 3
             splay: -1
             spread: kx+0.6
@@ -40,42 +40,42 @@ points:
             stagger: 5
             splay: -2
             spread: kx+0.8
-            column_net: D1
-            mirror.column_net: D9
+            column_net: P4
+            mirror.column_net: P4
         middle:
           key:
             stagger: 6
             splay: -2
             spread: kx+1
-            column_net: D7
-            mirror.column_net: D3
+            column_net: P5
+            mirror.column_net: P6
         index:
           key:
             stagger: -4
             splay: -1
             spread: kx+0.8
-            column_net: D8
-            mirror.column_net: D2
+            column_net: P7
+            mirror.column_net: P8
         inner:
           key:
             stagger: -3
             splay: -1
             spread: kx+0.6
-            column_net: D10
-            mirror.column_net: D0
+            column_net: P9
+            mirror.column_net: P9
       rows:
         bottom:
-          row_net: D6
-          mirror.row_net: D4
+          row_net: P10
+          mirror.row_net: P10
         home:
-          row_net: D4
-          mirror.row_net: D6
+          row_net: P16
+          mirror.row_net: P16
         high:
-          row_net: D2
-          mirror.row_net: D8
+          row_net: P14
+          mirror.row_net: P14
         num:
-          row_net: D0
-          mirror.row_net: D10
+          row_net: P15
+          mirror.row_net: P15
     thumb:
       key:
         padding: 1ky
@@ -87,24 +87,24 @@ points:
         near:
           key:
             splay: -15
-            column_net: D7
-            mirror.column_net: D3
+            column_net: P4
+            mirror.column_net: P4
         mid:
           key:
             splay: -15
             shift: [3,-2]
-            column_net: D8
-            mirror.column_net: D2
+            column_net: P5
+            mirror.column_net: P5
         far:
           key:
             splay: -15
             shift: [6.4,-3.2]
-            column_net: D10
-            mirror.column_net: D0
+            column_net: P6
+            mirror.column_net: P6
       rows:
         fan:
-          row_net: D9
-          mirror.row_net: D1
+          row_net: P18
+          mirror.row_net: P18
   rotate: 7
   mirror: &mirror
     ref: thumb_far_fan
@@ -157,36 +157,218 @@ outlines:
           shift: [44,-42]
       fillet: 8
 pcbs:
-  biggie-splays_choc_v2_left_unrouted:
+  newbiggie_left_unrouted:
     template: kicad8
     outlines:
       main:
         outline: board_left
-    footprints:
-      choc_v2:
-        what: switch_choc_v1_v2
+    footprints:      
+      pg1316s:
+        what: switch_pg1316s
         where: /^hand|^thumb/
         params:
-          reversible: false
-          hotswap: true
-          choc_v2_support: true
-          include_choc_v2_led_cutout_marks: true
-          keycap_height: ky
-          keycap_width: kx
-          include_keycap: true
-          from: "{{col_net}}"
+          from: "{{column_net}}"
           to: "{{colrow}}"
-      diode:
-        what: diode_tht_sod123
-        where: /^hand|^thumb/
+          reversible: false
+          side: 'F'
+          large_p1: false
+          square_p1: true
+          square_p2: true
+          small_mp: false
+          pad_vias: true
+          pad_via_size: 0.4
+          mp_vias: true
+          mp_via_size: 0.4
+          key_3dmodel_filename: '\${MODELS}/PG1316S.STEP'
+      diode_num1:
+        what: diode_bav70_larssont
+        where: hand_inner_home
         params:
-          from: "{{colrow}}"
-          to: "{{row_net}}"
+          A1: "stretch_num"
+          A2: "pinky_num"
+          C: "P15"
           side: F
         adjust:
-          shift: [0, -5]
+          shift: [16, 7]
+          rotate: -90
+      diode_num2:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "ring_num"
+          A2: "middle_num"
+          C: "P15"
+          side: F
+        adjust:
+          shift: [23, 7]
+          rotate: -90
+      diode_num3:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "index_num"
+          A2: "inner_num"
+          C: "P15"
+          side: F
+        adjust:
+          shift: [30, 7]
+          rotate: -90
+      diode_high1:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "stretch_high"
+          A2: "pinky_high"
+          C: "P14"
+          side: F
+        adjust:
+          shift: [16,2]
+          rotate: -90
+      diode_high2:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "ring_high"
+          A2: "middle_high"
+          C: "P14"
+          side: F
+        adjust:
+          shift: [23,2]
+          rotate: -90
+      diode_high3:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "index_high"
+          A2: "inner_high"
+          C: "P14"
+          side: F
+        adjust:
+          shift: [30,2]
+          rotate: -90
+
+      diode_home1:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "stretch_home"
+          A2: "pinky_home"
+          C: "P16"
+          side: F
+        adjust:
+          shift: [16, -3]  
+          rotate: -90
+      diode_home2:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "ring_home"
+          A2: "middle_home"
+          C: "P16"
+          side: F
+        adjust:
+          shift: [23, -3]  
+          rotate: -90
+      diode_home3:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "index_home"
+          A2: "inner_home"
+          C: "P16"
+          side: F
+        adjust:
+          shift: [30,-3]
+          rotate: -90
+
+      diode_bottom1:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "stretch_bottom"
+          A2: "pinky_bottom"
+          C: "P10"
+          side: F
+        adjust:
+          shift: [16, -8]
+          rotate: -90
+      diode_bottom2:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "ring_bottom"
+          A2: "middle_bottom"
+          C: "P10"
+          side: F
+        adjust:
+          shift: [23, -8]
+          rotate: -90
+      diode_bottom3:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "index_bottom"
+          A2: "inner_bottom"
+          C: "P10"
+          side: F
+        adjust:
+          shift: [30,-8]
+          rotate: -90
+
+      diode_thumb1:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "near_fan"
+          A2: "mid_fan"
+          C: "P18"
+          side: F
+        adjust:
+          shift: [16, -13]
+          rotate: -90
+      diode_thumb2:
+        what: diode_bav70_larssont
+        where: hand_inner_home
+        params:
+          A1: "far_fan"
+          A2: "encoder"
+          C: "P18"
+          side: F
+        adjust:
+          shift: [23, -13]
+          rotate: -90
+      
+      led:
+        what: led_ws2812b_2020
+        where: /^hand|^thumb/
+        params:
+          P1: 'VCC'
+          P2: P2
+          P3: 'GND'
+          P4: P4
+        adjust:
+          shift: [-0.6,2.5]
+
+      rotary:
+        what: rotary_encoder_ec11_ec12
+        where: thumb_mid_fan
+        params:
+          include_plated_mounting_holes: true
+          include_plate_hole_marking: true
+          encoder_3dmodel_filename: ''
+          S1: 'P9'
+          S2: 'thumb_encoder'
+          A: 'RE_A'
+          B: 'GND'
+          C: 'RE_C'
+        adjust:
+          shift: [0,21]
       mcu:
           what: mcu_nice_nano
+          params:
+            mcu_3dmodel_filename: '\${MODELS}/nice_nano_v2.step'
+            mcu_3dmodel_xyz_rotation: [180, 0, 90]
+            mcu_3dmodel_xyz_offset: [0, 0, 1.2]
           where:
             ref: hand_inner_num
             shift: [26,-10]
@@ -196,6 +378,8 @@ pcbs:
         params:
           from: GND
           to: RST
+          reset_switch_3dmodel_filename: '\${MODELS}/EVQPU-MD-02K.STEP'
+          reset_switch_3dmodel_xyz_rotation: [-90, 0, 180]
         where:
           ref: hand_inner_num
           shift: [42,-20]
@@ -203,8 +387,11 @@ pcbs:
       power:
         what: power_switch_smd_side
         params:
-          from: BAT_P
-          to: RAW
+          from: RAW
+          to: BAT_P
+          switch_3dmodel_filename: '\${MODELS}/SSSS811101.STEP'
+          switch_3dmodel_xyz_rotation: [-90, 0, -90]
+          invert_behavior: true
         where:
           ref: hand_inner_num
           shift: [42,-6]
@@ -215,25 +402,30 @@ pcbs:
           ref: hand_inner_num
           shift: [40,-30]
           rotate: 0
-  biggie-splays_choc_v2_right_unrouted:
+  newbiggie_right_unrouted:
     template: kicad8
     outlines:
       main:
         outline: board_right
-    footprints:
-      choc_v2:
-        what: switch_choc_v1_v2
+    footprints:      
+      pg1316s:
+        what: switch_pg1316s
         where: /^mirror/
         params:
-          reversible: false
-          hotswap: true
-          choc_v2_support: true
-          include_choc_v2_led_cutout_marks: true
-          keycap_height: ky
-          keycap_width: kx
-          include_keycap: true
           from: "{{column_net}}"
           to: "{{colrow}}"
+          reversible: false
+          side: 'F'
+          large_p1: false
+          square_p1: true
+          square_p2: true
+          shift_p2: false
+          small_mp: false
+          pad_vias: true
+          pad_via_size: 0.4
+          mp_vias: true
+          mp_via_size: 0.4
+          key_3dmodel_filename: '\${MODELS}/PG1316S.STEP'
       diode:
         what: diode_tht_sod123
         where: /^mirror/
@@ -242,7 +434,7 @@ pcbs:
           to: "{{row_net}}"
           side: F
         adjust:
-          shift: [0, -5]
+          shift: [1, 2]
       mcu:
           what: mcu_nice_nano
           where:
